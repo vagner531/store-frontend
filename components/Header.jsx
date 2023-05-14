@@ -12,13 +12,33 @@ import { BiMenuAltRight } from "react-icons/bi";
 const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showCatMenu, setShowCatMenu] = useState(false);
-  const [show, setShow] = useState("tranlate-y-0");
-  const [lastScrollY, setlastScrollY] = useState(0);
+  const [show, setShow] = useState("translate-y-0");
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavBar = () => {
+    if(window.scrolly > 200) {
+      if(window.scrolly > lastScrollY && !mobileMenu) {
+        setShow("translate-y-[80px]")
+      }else {
+        setShow("shadow-sm")
+      }
+    }else {
+      setShow("translate-y-0")
+    }
+    setLastScrollY(window.scrolly)
+  }
+
+  useEffect(()=> {
+    window.addEventListener("scroll", controlNavBar);
+    return () => {
+      window.removeEventListener("scroll", controlNavBar)
+    }
+  }, [lastScrollY])
 
   return (
     <header
       className={`w-full h-[50px] md:h-[80px] bg-black flex items-center 
-    justify-between text-white z-20 sticky top-0 transition-transform duration-300 tranlate-y-0 ${show}`}
+    justify-between text-white z-20 sticky top-0 transition-transform duration-300 ${show}`}
     >
       <Wrapper className="h-[60px] flex justify-between items-center">
         <Link href="/">
